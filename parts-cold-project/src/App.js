@@ -10,6 +10,7 @@ import './App.css';
 import Login from './components/Login';
 import Header from './components/Header';
 import PropTypes from 'prop-types'
+import MainDashboard from './components/MainDashboard';
 
 function ProtectedComponent({ children }) {
   const navigate = useNavigate();
@@ -33,13 +34,14 @@ function App() {
 
     <Router>
       <div className="bg-slate-700 h-screen flex flex-col overflow-hidden">
-        <header className=" bg-white "  >
+        <header className="bg-white"  >
           <Header />
         </header>
         <div className="App-body">
           <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} exactpath />
+            <Route path='/maindashboard' element={<MainDashboard /> } />
             <Route path="*" element={<h1>Not Found 404</h1>} />
           </Routes>
         </div>

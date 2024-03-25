@@ -1,6 +1,6 @@
 import React from "react";
-import logo from '../img/partsfrio.jpg'
-export default function () {
+import logo from "../img/partsfrio.jpg";
+export default function Header() {
   return (
     <div class="p-2 text-gray-900 bg-white rounded-lg shadow-lg font-medium capitalize">
       <span class="px-2 mr-2 border-r border-gray-800">
@@ -28,12 +28,18 @@ export default function () {
         <i class="w-8 fas fa-bell p-2 bg-gray-200 rounded-full"></i>
         <span class="absolute right-0 top-0 -mt-2 -mr-1 text-xs bg-red-500 text-white font-medium px-2 shadow-lg rounded-full">
           3
+          {
+            //Cambiar el numero por una variable que contenga los estados de las notificaciones
+          }
         </span>
       </span>
       <span class="w-10 relative float-right mr-3 cursor-pointer hover:text-gray-700">
         <i class="w-8 fas fa-user p-2 bg-gray-200 rounded-full"></i>
         <span class="absolute right-0 top-0 -mt-1 -mr-1 text-xs bg-yellow-500 text-black font-medium px-2 rounded-full">
           3
+          {
+            //Cambiar el numero por una variable que contenga los estados de las notificaciones
+          }
         </span>
       </span>
     </div>
