@@ -7,12 +7,12 @@ import {
   useNavigate,
   useLocation
 } from "react-router-dom";
-import './App.css';
-import Login from './components/Login';
-import Header from './components/Header';
+import '../style/App.css'
 import PropTypes from 'prop-types'
-import MainDashboard from './components/MainDashboard';
-import HeaderLogin from './components/HeaderLogin';
+import Login from './../components/Login';
+import MainDashboard from './../components/MainDashboard';
+import HeaderLogin from './../components/HeaderLogin';
+import Header from './../components/Header'
 
 function ProtectedComponent({ children }) {
   const navigate = useNavigate();
@@ -37,8 +37,8 @@ function HeaderSelector() {
   return location.pathname === "/login" ? <HeaderLogin /> : <Header />;
 }
 
-function App() {
-  return (
+function RoutesComp() {
+ return (
 
     <Router>
       <div className="bg-slate-700 h-screen flex flex-col overflow-hidden">
@@ -58,4 +58,4 @@ function App() {
   );
 }
 
-export default App;
+export default RoutesComp;
