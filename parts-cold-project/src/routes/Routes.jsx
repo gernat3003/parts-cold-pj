@@ -9,10 +9,10 @@ import {
 } from "react-router-dom";
 import '../style/App.css'
 import PropTypes from 'prop-types'
-import Login from './../components/Login';
-import MainDashboard from './../components/MainDashboard';
 import HeaderLogin from './../components/HeaderLogin';
 import Header from './../components/Header'
+import Login from '../pages/Login';
+import MainDashboard from './../pages/MainDashboard';
 
 function ProtectedComponent({ children }) {
   const navigate = useNavigate();
