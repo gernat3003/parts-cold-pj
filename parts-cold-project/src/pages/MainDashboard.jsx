@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 
 export default function MainDashboard() {
+    //TODO: Realizar la logica para el funcionamiento del componente
   return (
     <div className="p-5 h-90 mb-16 w-3/6 bg-slate-900 text-green-200 rounded-md opacity-60 w-3/8">
       <ToastContainer />
