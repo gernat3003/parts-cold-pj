@@ -14,17 +14,13 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      // Si el hook está cargando, no se realiza ninguna acción
       if (loading) return;
 
-      // Si hay un error en el hook, mostramos un mensaje de error
       if (error) {
         throw new Error(error.message);
       }
 
-      // Si hay datos devueltos por el hook (es decir, la solicitud se completó con éxito), realizamos acciones correspondientes
       if (data) {
-        console.log(data);
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", username);
         localStorage.setItem("userIdLogged", data.user.id);
