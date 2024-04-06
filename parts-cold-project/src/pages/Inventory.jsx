@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import useGetRequest from "../Hooks/useGetRequest";
 import {
   PencilSquareIcon,
   TrashIcon,
@@ -8,6 +7,9 @@ import {
   ArrowUpCircleIcon,
 } from "@heroicons/react/24/outline";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import useGetRequest from "../Hooks/useGetRequest";
+import usePutRequest from "./../Hooks/usePutRequest";
 
 const Pagination = ({ totalItems, itemsPerPage, currentPage, paginate }) => {
   const pageNumbers = [];
@@ -49,6 +51,7 @@ export default function Inventory() {
     loading,
     error,
   } = useGetRequest("/api/inventario");
+  const { putData: putItem } = usePutRequest();
 
   useEffect(() => {
     if (successMessage) {
@@ -63,6 +66,18 @@ export default function Inventory() {
       });
     }
   }, [successMessage]);
+
+  if (error) {
+    toast.error("Error al cargar inventario, inténtelo de nuevo", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
 
   const handleDelete = async (itemId) => {
     try {
@@ -141,29 +156,6 @@ export default function Inventory() {
     }
   };
 
-  if (!loadingUsers && errorUsers) {
-    toast.error("Error al cargar usuarios, intentelo de nuevo", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  }
-  if (!loadingDelete && errorDelete) {
-    toast.error("Error al Eliminar el usuario, intentelo de nuevo", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  }
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = inventoryData.slice(indexOfFirstItem, indexOfLastItem);
@@ -192,13 +184,13 @@ export default function Inventory() {
                 <th className="text-left p-3 px-5">Area de Uso</th>
                 <th className="text-left p-3 px-5"></th>
               </tr>
-              {loadingUsers && (
+              {loading && (
                 <tr>
                   <td>Loading...</td>
                 </tr>
               )}
-              {!loadingUsers &&
-                !errorUsers &&
+              {!loading &&
+                !error &&
                 currentItems.map((item) => (
                   <tr
                     className="border-b hover:bg-orange-100 bg-gray-100"
