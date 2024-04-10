@@ -1,38 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { toast, ToastContainer } from "react-toastify";
 import useGetRequest from "../Hooks/useGetRequest";
 import useDeleteRequest from "../Hooks/useDeleteRequest";
-
-const Pagination = ({ totalItems, itemsPerPage, currentPage, paginate }) => {
-  const pageNumbers = [];
-
-  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-    pageNumbers.push(i);
-  }
-
-  return (
-    <nav className="flex justify-center mt-4">
-      <ul className="flex">
-        {pageNumbers.map((number) => (
-          <li key={number} className="mx-1">
-            <button
-              onClick={() => paginate(number)}
-              className={`${
-                currentPage === number
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-300 text-gray-700"
-              } px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-700`}
-            >
-              {number}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
-};
+import Pagination from "./Pagination";
+import UserTable from "./UserTable";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -43,13 +15,6 @@ function Users() {
   const [itemsPerPage] = useState(7);
   const location = useLocation();
   const { successMessage } = location.state || {};
-  const [formData, setFormData] = useState({
-    id: "",
-    name: "",
-    user_name: "",
-    password: "",
-    role: "",
-  });
 
   const {
     data,
@@ -99,10 +64,7 @@ function Users() {
       });
     } else {
       try {
-        await deleteData(
-          `https://rocky-dawn-84773-5951dec09d0b.herokuapp.com/api/users/${userId}`,
-          token
-        );
+        await deleteData(`api/users/${userId}`, token);
         toast.success("Usuario eliminado con éxito", {
           position: "top-center",
           autoClose: 5000,
@@ -170,94 +132,13 @@ function Users() {
             Agregar Usuario
           </button>
         </div>
-        <div className="px-3 py-4 flex justify-center">
-          <table className="w-full text-md bg-white shadow-md rounded mb-4">
-            <tbody>
-              <tr className="border-b">
-                <th className="text-left p-3 px-5">Nombre</th>
-                <th className="text-left p-3 px-5">Usuario</th>
-                <th className="text-left p-3 px-5">Contraseña</th>
-                <th className="text-left p-3 px-5">Role</th>
-                <th></th>
-              </tr>
-              {loadingUsers && (
-                <tr>
-                  <td>Loading...</td>
-                </tr>
-              )}
-              {!loadingUsers &&
-                !errorUsers &&
-                currentItems.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="border-b hover:bg-orange-100 bg-gray-100"
-                  >
-                    <td className="p-3 px-5">
-                      <input
-                        type="text"
-                        value={user.name}
-                        onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
-                        }
-                        className="bg-transparent"
-                        disabled
-                      />
-                    </td>
-                    <td className="p-3 px-5">
-                      <input
-                        type="text"
-                        value={user.user_name}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            user_name: e.target.value,
-                          })
-                        }
-                        className="bg-transparent"
-                      />
-                    </td>
-                    <td className="p-3 px-5">
-                      <input
-                        type="password"
-                        value="password"
-                        onChange={(e) =>
-                          setFormData({ ...formData, password: e.target.value })
-                        }
-                        className="bg-transparent"
-                        max={8}
-                        disabled
-                      />
-                    </td>
-                    <td className="p-3 px-5">
-                      <input
-                        type="text"
-                        value={user.role}
-                        onChange={(e) =>
-                          setFormData({ ...formData, role: e.target.value })
-                        }
-                        className="bg-transparent"
-                        disabled
-                      />
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => handleEdit(user.id)}
-                        className="text-sm bg-blue-500 hover:bg-blue-800 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outliine mr-5"
-                      >
-                        <PencilSquareIcon className="w-6 h-6" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(user.id)}
-                        className="text-sm mr-4 bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                      >
-                        <TrashIcon className="w-6 h-6" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
+        <UserTable
+          loadingUsers={loadingUsers}
+          errorUsers={errorUsers}
+          currentItems={currentItems}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+        />
         <Pagination
           totalItems={users.length}
           itemsPerPage={itemsPerPage}
