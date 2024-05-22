@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import useGetRequest from "../Hooks/useGetRequest";
 import useDeleteRequest from "../Hooks/useDeleteRequest";
-import Pagination from "./Pagination";
-import UserTable from "./UserTable";
+import Pagination from "../components/Pagination";
+import TableUser from "../components/TableUser";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -14,6 +14,7 @@ function Users() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(7);
   const location = useLocation();
+
   const { successMessage } = location.state || {};
 
   const {
@@ -48,7 +49,7 @@ function Users() {
   }, [data]);
 
   const handleEdit = (userId) => {
-    navigate(`/admin-dashboard/usuarios/editarusuario`, { state: { userId } });
+    navigate(`/maindashboard/usuarios/editarusuario`, { state: { userId } });
   };
 
   const handleDelete = async (userId) => {
@@ -64,7 +65,7 @@ function Users() {
       });
     } else {
       try {
-        await deleteData(`api/users/${userId}`, token);
+        await deleteData(`users/${userId}`, token);
         toast.success("Usuario eliminado con éxito", {
           position: "top-center",
           autoClose: 5000,
@@ -122,17 +123,17 @@ function Users() {
   return (
     <div>
       <ToastContainer />
-      <div className="text-gray-900 bg-gray-200 ">
+      <div className="text-gray-900 bg-transparent ">
         <div className="p-4 flex justify-between">
-          <h1 className="text-3xl font-bold">Usuarios</h1>
+          <h1 className="text-3xl text-white font-bold">Usuarios</h1>
           <button
             className="text-md mr-3 bg-green-500 hover:bg-green-700 text-white py-2 px-3 rounded focus:outline-none focus:shadow-outline"
-            onClick={() => navigate("/admin-dashboard/usuarios/createuser")}
+            onClick={() => navigate("/maindashboard/usuarios/createuser")}
           >
             Agregar Usuario
           </button>
         </div>
-        <UserTable
+        <TableUser
           loadingUsers={loadingUsers}
           errorUsers={errorUsers}
           currentItems={currentItems}

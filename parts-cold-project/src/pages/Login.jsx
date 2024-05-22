@@ -1,35 +1,51 @@
 import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import useGetRequest from "../Hooks/useGetRequest";
+import axios from "axios";
 export default function Login() {
+  axios.defaults.withCredentials = true;
+  axios.defaults.withXSRFToken = true;
+
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { data, loading, error } = useGetRequest(
-    `/api/login?user_name=${username}&password=${password}` //TODO: Cambiar URL de la api
-  );
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      if (loading) return;
+      // Realizamos la solicitud para obtener el token CSRF
+      await axios.get(`http://localhost:8000/sanctum/csrf-cookie`, {
+        withCredentials: true,
+      });
 
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      if (data) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", username);
-        localStorage.setItem("userIdLogged", data.user.id);
-        navigate("/maindashboard");
-      }
-    } catch (error) {
-      console.error(
-        "There was a problem with the fetch operation: " + error.message
+      // Realizamos la solicitud de inicio de sesión
+      const response = await axios.post(
+        `http://localhost:8000/api/login`,
+        {
+          user_name: username,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          withCredentials: true, // Aseguramos que las credenciales se envíen
+        }
       );
+      if (response.status !== 200) {
+        throw new Error("Error en la autenticación");
+      }
+
+      const data = response.data;
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", username);
+      localStorage.setItem("userIdLogged", data.user.id);
+      localStorage.setItem("rol", data.user.rol);
+
+      navigate("/maindashboard");
+    } catch (error) {
+      // Mostramos un mensaje de error al usuario
       toast.error(error.message, {
         position: "top-right",
         autoClose: 5000,
@@ -41,6 +57,7 @@ export default function Login() {
       });
     }
   };
+
   return (
     <div className="bg-gray-100 rounded-lg py-10 px-4 lg:px-24">
       <ToastContainer />

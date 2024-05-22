@@ -7,7 +7,6 @@ const TableUser = ({
   currentItems,
   handleEdit,
   handleDelete,
-  setFormData,
 }) => {
   return (
     <div className="px-3 py-4 flex justify-center">
@@ -28,12 +27,14 @@ const TableUser = ({
           {!loadingUsers &&
             !errorUsers &&
             currentItems.map((user) => (
-              <tr key={user.id} className="border-b hover:bg-orange-100 bg-gray-100">
+              <tr
+                key={user.id}
+                className="border-b hover:bg-orange-100 bg-gray-100"
+              >
                 <td className="p-3 px-5">
                   <input
                     type="text"
-                    value={user.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    defaultValue={user.name}
                     className="bg-transparent"
                     disabled
                   />
@@ -41,16 +42,14 @@ const TableUser = ({
                 <td className="p-3 px-5">
                   <input
                     type="text"
-                    value={user.user_name}
-                    onChange={(e) => setFormData({ ...formData, user_name: e.target.value })}
+                    defaultValue={user.user_name}
                     className="bg-transparent"
                   />
                 </td>
                 <td className="p-3 px-5">
                   <input
                     type="password"
-                    value="password"
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    defaultValue="password"
                     className="bg-transparent"
                     max={8}
                     disabled
@@ -59,8 +58,7 @@ const TableUser = ({
                 <td className="p-3 px-5">
                   <input
                     type="text"
-                    value={user.role}
-                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                    defaultValue={user.rol}
                     className="bg-transparent"
                     disabled
                   />

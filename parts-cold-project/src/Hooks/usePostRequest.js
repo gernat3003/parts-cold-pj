@@ -11,13 +11,14 @@ const createAxiosInstance = () => {
         baseURL: apiUrl, // URL base para todas las solicitudes
         timeout: 5000, // Tiempo de espera para las solicitudes (en milisegundos)
         headers: {
-            'Content-Type': 'application/json', // Tipo de contenido para las solicitudes
+            'Content-Type': 'application/json',
+            Accept: "application/json", // Tipo de contenido para las solicitudes
         },
     });
 };
 
 // Hook personalizado para manejar solicitudes POST
-const usePostRequest = () => {
+export default function usePostRequest() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -40,4 +41,4 @@ const usePostRequest = () => {
     return { postData, loading, error };
 };
 
-export default usePostRequest;
+

@@ -2,23 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import useGetRequest from "../Hooks/useGetRequest";
-import usePutRequest from "../Hooks/usePutRequest";
-import Pagination from "./Pagination";
-import InventoryTable from "./InventoryTable";
-import axios from "axios";
+import useDeleteRequest from "../Hooks/useDeleteRequest";
+import Pagination from "../components/Pagination";
+import InventoryTable from "./../components/InventoryTable";
+import SearchBar from "../components/SearchBar";
 
 export default function Inventory() {
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { successMessage } = location.state || {};
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(8); // Number of items to display per page
+  const [itemsPerPage] = useState(10);
+  const location = useLocation();
+
+  const { successMessage } = location.state || {};
+
   const {
-    data: inventoryData,
-    loading,
-    error,
-  } = useGetRequest("/api/inventario");
-  const { putData: putItem } = usePutRequest();
+    data,
+    loading: loadingProducts,
+    error: errorProducts,
+  } = useGetRequest(`inventario`);
+  const {
+    deleteData,
+    loading: loadingDelete,
+    error: errorDelete,
+  } = useDeleteRequest();
 
   useEffect(() => {
     if (successMessage) {
@@ -34,8 +41,58 @@ export default function Inventory() {
     }
   }, [successMessage]);
 
-  if (error) {
-    toast.error("Error al cargar inventario, inténtelo de nuevo", {
+  useEffect(() => {
+    if (data) {
+      setProducts(data);
+    }
+  }, [data]);
+
+  const handleEdit = (itemId) => {
+    navigate(`/maindashboard/usuarios/editarproducto`, { state: { itemId } });
+  };
+
+  const handleDelete = async (itemId) => {
+    try {
+      await deleteData(`inventario/${itemId}`);
+      toast.success("Usuario eliminado con éxito", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setProducts(products.filter((item) => item.id !== itemId));
+    } catch (error) {
+      toast.error(
+        { error },
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+    }
+  };
+
+  if (!loadingProducts && errorProducts) {
+    toast.error("Error al cargar usuarios, intentelo de nuevo", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
+  if (!loadingDelete && errorDelete) {
+    toast.error("Error al Eliminar el usuario, intentelo de nuevo", {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -46,113 +103,35 @@ export default function Inventory() {
     });
   }
 
-  const handleDelete = async (itemId) => {
-    try {
-      await axios.delete(`/api/inventario/${itemId}`);
-      toast.success("Item eliminado con éxito", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-      });
-    } catch (error) {
-      toast.error("Error al eliminar el item", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-      });
-    }
-  };
-
-  const handleEdit = (itemId) => {
-    navigate(`/admin-dashboard/inventario/editarproducto`, {
-      state: { itemId },
-    });
-  };
-
-  const handleUpItem = async (itemId) => {
-    try {
-      const itemUpdated = {
-        ...inventoryData.find((item) => item.id === itemId),
-      };
-      itemUpdated.cantidad += 1;
-      await putItem(`/api/inventario/${itemId}`, itemUpdated);
-      toast.success("Item actualizado con éxito", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-      });
-    } catch (error) {
-      toast.error("Error al actualizar el item", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-      });
-    }
-  };
-
-  const handleDownItem = async (itemId) => {
-    try {
-      const itemUpdated = {
-        ...inventoryData.find((item) => item.id === itemId),
-      };
-      itemUpdated.cantidad -= 1;
-      await putItem(`/api/inventario/${itemId}`, itemUpdated);
-      toast.success("Item actualizado con éxito", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-      });
-    } catch (error) {
-      toast.error("Error al actualizar el item", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-      });
-    }
-  };
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = inventoryData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div>
       <ToastContainer />
-      <div className="text-gray-900 bg-gray-200">
-        <div className="p-4 flex justify-between">
-          <h1 className="text-3xl">Inventario</h1>
+      <SearchBar />
+      <div className="text-gray-900 bg-transparent content-center mt-7">
+        <div className="flex justify-between space-y-2">
+          <h1 className="text-3xl text-white">Inventario</h1>
           <button
             onClick={() =>
               navigate("/admin-dashboard/inventario/create-product")
             }
-            className="text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+            className="text-sm bg-green-500 hover:bg-green-700 text-white py-2 px-2 rounded focus:outline-none focus:shadow-outline"
           >
             Agregar Nuevo Item
           </button>
         </div>
         <InventoryTable
-          loading={loading}
-          error={error}
+          loadingInventory={loadingProducts}
+          errorInventory={errorProducts}
           currentItems={currentItems}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
-          handleUpItem={handleUpItem}
-          handleDownItem={handleDownItem}
         />
         <Pagination
-          totalItems={inventoryData.length}
+          totalItems={products.length}
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
           paginate={setCurrentPage}
