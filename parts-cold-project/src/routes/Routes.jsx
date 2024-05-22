@@ -5,11 +5,9 @@ import {
   Routes,
   Navigate,
   useNavigate,
-  useLocation,
 } from "react-router-dom";
 import "../style/App.css";
 import PropTypes from "prop-types";
-import HeaderLogin from "./../components/HeaderLogin";
 import Header from "./../components/Header";
 import Login from "../pages/Login";
 import MainDashboard from "./../pages/MainDashboard";
@@ -36,33 +34,28 @@ ProtectedComponent.propTypes = {
   children: PropTypes.node,
 };
 
-function HeaderSelector() {
-  const location = useLocation();
-
-  return location.pathname === "/login" ? <HeaderLogin /> : <Header />;
-}
-
 function RoutesComp() {
   return (
-    <Router>
-      <div className="bg-slate-700 h-screen flex flex-col overflow-hidden">
-        <header className="bg-white">
-          <HeaderSelector />
+    <Router className="flex flex-col  overflow-x-hidden overflow-auto">
+        <header className="App-header bg-white">
+          <Header />
         </header>
-        <div className="App-body">
+        <div className="App-body bg-slate-700 p-8">
           <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} exactpath />
             <Route path="/maindashboard" element={<MainDashboard />} />
-            <Route path="/maindashboard/users" element={<Users />} />
-            <Route path="/maindashboard/inventory" element={<Inventory />} />
-            <Route path="/maindashboard/record" element={<SalesRecord />} />
-            <Route path="/maindashboard/invoices" element={<Invoices />} />
+            <Route path="/maindashboard/usuarios" element={<Users />} />
+            <Route path="/maindashboard/inventario" element={<Inventory />} />
+            <Route
+              path="/maindashboard/registro-ventas"
+              element={<SalesRecord />}
+            />
+            <Route path="/maindashboard/facturacion" element={<Invoices />} />
             <Route path="/maindashboard/marketcar" element={<MarketCar />} />
             <Route path="*" element={<h1>Not Found 404</h1>} />
           </Routes>
         </div>
-      </div>
     </Router>
   );
 }
