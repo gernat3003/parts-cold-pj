@@ -16,6 +16,7 @@ import Inventory from "./../pages/Inventory";
 import SalesRecord from "./../pages/SalesRecord";
 import Invoices from "./../pages/Invoices";
 import MarketCar from "../pages/MarketCar";
+import CollectInfoConsumer from "../pages/CollectInfoConsumer";
 
 function ProtectedComponent({ children }) {
   const navigate = useNavigate();
@@ -36,26 +37,24 @@ ProtectedComponent.propTypes = {
 
 function RoutesComp() {
   return (
-    <Router className="flex flex-col  overflow-x-hidden overflow-auto">
-        <header className="App-header bg-white">
-          <Header />
-        </header>
-        <div className="App-body bg-slate-700 p-8">
-          <Routes>
-            <Route path="/" element={<Navigate to="/login" />} />
-            <Route path="/login" element={<Login />} exactpath />
-            <Route path="/maindashboard" element={<MainDashboard />} />
-            <Route path="/maindashboard/usuarios" element={<Users />} />
-            <Route path="/maindashboard/inventario" element={<Inventory />} />
-            <Route
-              path="/maindashboard/registro-ventas"
-              element={<SalesRecord />}
-            />
-            <Route path="/maindashboard/facturacion" element={<Invoices />} />
-            <Route path="/maindashboard/marketcar" element={<MarketCar />} />
-            <Route path="*" element={<h1>Not Found 404</h1>} />
-          </Routes>
-        </div>
+    <Router className="flex flex-col overflow-x-hidden overflow-auto">
+      <header className="App-header bg-white">
+        <Header />
+      </header>
+      <div className="App-body bg-slate-700 p-8">
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<Login />} exactpath />
+          <Route path="/maindashboard" element={<MainDashboard />} />
+          <Route path="/maindashboard/usuarios" element={<Users />} />
+          <Route path="/maindashboard/inventario" element={<Inventory />} />
+          <Route path="/maindashboard/registro-ventas" element={<SalesRecord />}/>
+          <Route path="/maindashboard/facturacion" element={<Invoices />} />
+          <Route path="/maindashboard/marketcar" element={<MarketCar />} />
+          <Route path="/maindashboard/facturacion/generacionfactura" element={<CollectInfoConsumer />} />
+          <Route path="*" element={<h1>Not Found 404</h1>} />
+        </Routes>
+      </div>
     </Router>
   );
 }
