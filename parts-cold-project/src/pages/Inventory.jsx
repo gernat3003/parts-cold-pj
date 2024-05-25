@@ -9,6 +9,8 @@ import SearchBar from "../components/SearchBar";
 
 export default function Inventory() {
   const [products, setProducts] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -20,7 +22,10 @@ export default function Inventory() {
     data,
     loading: loadingProducts,
     error: errorProducts,
-  } = useGetRequest(`inventario`);
+  } = useGetRequest(
+    isSearching ? `inventario/search?termino=${searchTerm}` : `inventario`
+  );
+
   const {
     deleteData,
     loading: loadingDelete,
@@ -103,6 +108,11 @@ export default function Inventory() {
     });
   }
 
+  const handleSearch = (term) => {
+    setIsSearching(true);
+    setSearchTerm(term);
+  };
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
@@ -110,7 +120,7 @@ export default function Inventory() {
   return (
     <div>
       <ToastContainer />
-      <SearchBar />
+      <SearchBar onSearch={handleSearch} />
       <div className="text-gray-900 bg-transparent content-center mt-7">
         <div className="flex justify-between space-y-2">
           <h1 className="text-3xl text-white">Inventario</h1>
