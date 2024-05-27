@@ -13,6 +13,7 @@ const createAxiosInstance = () => {
     headers: {
       'Content-Type': 'application/json', // Tipo de contenido para las solicitudes
     },
+    withCredentials: true, // Permitir cookies de autenticación en las solicitudes
   });
 };
 
