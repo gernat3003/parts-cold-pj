@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 const useAxios = ({ url, method, body = null, responseType = 'json' }) => {
@@ -41,8 +42,8 @@ const useAxios = ({ url, method, body = null, responseType = 'json' }) => {
         return () => {
             source.cancel('Request canceled by cleanup');
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [method, url, body, responseType]);
     return { response, error, loading };
 };
