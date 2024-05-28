@@ -126,7 +126,7 @@ export default function Inventory() {
           <h1 className="text-3xl text-white">Inventario</h1>
           <button
             onClick={() =>
-              navigate("/admin-dashboard/inventario/create-product")
+              navigate("/maindashboard/inventario/create-product")
             }
             className="text-sm bg-green-500 hover:bg-green-700 text-white py-2 px-2 rounded focus:outline-none focus:shadow-outline"
           >
