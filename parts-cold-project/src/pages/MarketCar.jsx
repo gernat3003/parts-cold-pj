@@ -31,19 +31,22 @@ export default function MarketCar() {
   };
 
   const handleNavigate = () => {
-    navigate("/maindashboard/facturacion/generacionfactura", { state: { cart } });
+    navigate("/maindashboard/facturacion/generacionfactura", {
+      state: { cart, totalAmount },
+    });
   };
 
   const totalAmount = cart.reduce(
     (acc, item) => acc + parseFloat(item.precio_producto) * item.quantity,
     0
   );
-  console.log(cart);
   return (
     <div className="w-full">
       <div className="w-3/4 mx-auto text-gray-900 bg-transparent content-center mt-5">
         <div className="flex justify-between space-y-2">
-          <h1 className="ml-20 font-serif text-3xl text-white">Chequeo de compras</h1>
+          <h1 className="ml-20 font-serif text-3xl text-white">
+            Chequeo de compras
+          </h1>
           <button
             onClick={handleNavigate}
             className="mr-20 text-sm bg-green-500 hover:bg-green-700 text-white py-2 px-2 rounded focus:outline-none focus:shadow-outline"
