@@ -5,8 +5,8 @@ import axios from "axios";
 export default function Login() {
   axios.defaults.withCredentials = true;
   axios.defaults.withXSRFToken = true;
-  const baseURL = process.env.REACT_APP_API_URL;
-  const cookieURL = process.env.REACT_APP_COOKIE_URL;
+  const baseURL = "https://coldparts.online/api/";
+  const cookieURL = "https://coldparts.online/";
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

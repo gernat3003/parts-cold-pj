@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const createAxiosInstance = () => {
-    const apiUrl = process.env.REACT_APP_API_URL
+    const apiUrl = "https://coldparts.online/api/"
 
     return axios.create({
         baseURL: apiUrl,
