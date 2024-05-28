@@ -1,28 +1,27 @@
-
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-const useAxios = ({ url, method, body = null, responseType = 'json' }) => {
+
+const useAxios = (initialConfig) => {
+    const [config, setConfig] = useState(initialConfig);
     const [response, setResponse] = useState(null);
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(true);
-    const authToken = localStorage.getItem('token');
-    const source = axios.CancelToken.source();
-    console.log(url)
-    const fetchData = async () => {
+    const [loading, setLoading] = useState(false);
+
+    const BASE_URL = 'http://localhost:8000/api/'; // URL base por defecto
+
+    const fetchData = async (overrideConfig) => {
         setLoading(true);
         try {
             const res = await axios({
-                method: method,
-                url: `http://localhost:8000/api/${url}`,
-                data: body,
-                responseType: responseType,
+                ...config,
+                ...overrideConfig,
+                url: `${BASE_URL}${overrideConfig.url || config.url}`, // Concatenar la URL base con la URL de la configuración
                 headers: {
-                    'Authorization': `Bearer ${authToken}`,
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
+                    ...config.headers,
+                    ...overrideConfig.headers,
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
                 withCredentials: true,
-                cancelToken: source.token
             });
             setResponse(res.data);
         } catch (err) {
@@ -33,19 +32,12 @@ const useAxios = ({ url, method, body = null, responseType = 'json' }) => {
     };
 
     useEffect(() => {
-        if (!['get', 'post', 'put', 'delete'].includes(method.toLowerCase())) {
-            console.error('Invalid HTTP method');
-            return;
+        if (config.url && config.method) {
+            fetchData({});
         }
-        fetchData();
+    }, [config]);
 
-        return () => {
-            source.cancel('Request canceled by cleanup');
-        };
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [method, url, body, responseType]);
-    return { response, error, loading };
+    return { response, error, loading, setConfig, fetchData };
 };
 
 export default useAxios;
