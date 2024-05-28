@@ -66,14 +66,16 @@ export default function Invoices() {
   const handleAddToCart = (product) => {
     setCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
+      const precioConIva = product.precio_producto * 0.13; // Calcula el IVA
+
       if (existingProduct) {
         return prevCart.map((item) =>
           item.id === product.id
-            ? { ...item, quantity: (item.quantity || 1) + 1 }
+            ? { ...item, quantity: (item.quantity || 1) + 1, iva: precioConIva }
             : item
         );
       } else {
-        return [...prevCart, { ...product, quantity: 1 }];
+        return [...prevCart, { ...product, quantity: 1, iva: precioConIva }];
       }
     });
     toast.success(`${product.product_name} agregado al carrito`, {
@@ -91,7 +93,7 @@ export default function Invoices() {
     if (cart && cart.length > 0) {
       navigate("/maindashboard/marketcar", { state: { cart } });
     } else {
-      toast.warn("El carrito está vacío",{
+      toast.warn("El carrito está vacío", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
