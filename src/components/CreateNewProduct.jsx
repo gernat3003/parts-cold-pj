@@ -14,6 +14,7 @@ export default function CreateNewProduct() {
 
   const navigate = useNavigate();
   const { fetchData, response, error, loading } = useAxios({});
+  console.log(error, loading)
 
   const handleChange = (e) => {
     const { name, value } = e.target;

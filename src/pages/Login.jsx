@@ -5,7 +5,8 @@ import axios from "axios";
 export default function Login() {
   axios.defaults.withCredentials = true;
   axios.defaults.withXSRFToken = true;
-
+  const baseURL = process.env.REACT_APP_API_URL;
+  const cookieURL = process.env.REACT_APP_COOKIE_URL;
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -14,13 +15,12 @@ export default function Login() {
 
     try {
       // Realizamos la solicitud para obtener el token CSRF
-      await axios.get(`http://localhost:8000/sanctum/csrf-cookie`, {
+      await axios.get(`${cookieURL}sanctum/csrf-cookie`, {
         withCredentials: true,
       });
-
       // Realizamos la solicitud de inicio de sesión
       const response = await axios.post(
-        `http://localhost:8000/api/login`,
+        `${baseURL}login`,
         {
           user_name: username,
           password: password,
@@ -42,7 +42,6 @@ export default function Login() {
       localStorage.setItem("user", username);
       localStorage.setItem("userIdLogged", data.user.id);
       localStorage.setItem("rol", data.user.rol);
-
       navigate("/maindashboard");
     } catch (error) {
       // Mostramos un mensaje de error al usuario

@@ -3,9 +3,7 @@ import axios from 'axios';
 
 // Creamos una función que devuelve una instancia de Axios configurada
 const createAxiosInstance = () => {
-  const apiUrl = process.env.NODE_ENV === "production"
-    ? process.env.REACT_APP_API_URL_PROD
-    : process.env.REACT_APP_API_URL_DEV;
+  const apiUrl = process.env.REACT_APP_API_URL
 
   return axios.create({
     baseURL: apiUrl, // URL base para todas las solicitudes

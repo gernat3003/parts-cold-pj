@@ -16,7 +16,7 @@ const InventoryTable = ({
         !errorInventory &&
         currentItems.map(
           (item) => (
-            console.log(item),
+            console.log(item)
             (
               <div
                 className="relative flex flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-2xl mx-5 border border-white bg-white"
