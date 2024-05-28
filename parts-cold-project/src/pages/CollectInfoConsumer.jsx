@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useAxios from "../Hooks/useAxios";
 import { toast, ToastContainer } from "react-toastify";
 import PdfPreview from "./PdfPreview";
@@ -7,6 +7,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 const CollectInfoConsumer = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
+  const { cart } = state || {};
+  const { totalAmount } = state || {};
 
   const [formData, setFormData] = useState({
     nombre: "",
@@ -42,6 +46,8 @@ const CollectInfoConsumer = () => {
         giro: formData.giro,
         documento: formData.documento,
         registro_num: formData.registro_num,
+        cart: cart,
+        total: totalAmount,
       });
     }
   }, [shouldSendRequest, formData]);
@@ -77,16 +83,6 @@ const CollectInfoConsumer = () => {
       return () => {
         window.URL.revokeObjectURL(url);
       };
-    } else if (error) {
-      toast.error(`Error: ${error.message}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
     }
   }, [response, error]);
 
