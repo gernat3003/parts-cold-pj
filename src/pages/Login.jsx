@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/outline";
 export default function Login() {
   axios.defaults.withCredentials = true;
   axios.defaults.withXSRFToken = true;
@@ -9,18 +10,20 @@ export default function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       // Realizamos la solicitud para obtener el token CSRF
-      await axios.get(`http://localhost:8000/sanctum/csrf-cookie`, {
+      await axios.get(`https://coldparts.online/sanctum/csrf-cookie`, {
         withCredentials: true,
       });
 
       // Realizamos la solicitud de inicio de sesión
       const response = await axios.post(
-        `http://localhost:8000/api/login`,
+        `https://coldparts.online/api/login`,
         {
           user_name: username,
           password: password,
@@ -34,7 +37,15 @@ export default function Login() {
         }
       );
       if (response.status !== 200) {
-        throw new Error("Error en la autenticación");
+        toast.error("Error en la autenticación", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
 
       const data = response.data;
@@ -46,7 +57,7 @@ export default function Login() {
       navigate("/maindashboard");
     } catch (error) {
       // Mostramos un mensaje de error al usuario
-      toast.error(error.message, {
+      toast.error("Revisa las credenciales", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -56,6 +67,10 @@ export default function Login() {
         progress: undefined,
       });
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
   };
 
   return (
@@ -91,7 +106,7 @@ export default function Login() {
             className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
             id="password"
             required
-            type="password"
+            type={isPasswordVisible ? "text" : "password"}
             placeholder="Contraseña"
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -105,9 +120,18 @@ export default function Login() {
               <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z" />
             </svg>
           </div>
+          <div className="absolute right-0 inset-y-0 flex items-center">
+            <button type="button" onClick={togglePasswordVisibility}>
+              {isPasswordVisible ? (
+                <EyeSlashIcon className="h-7 w-7 mr-3 text-gray-400 p-1" />
+              ) : (
+                <EyeIcon className="h-7 w-7 mr-3 text-gray-400 p-1" />
+              )}
+            </button>
+          </div>
         </div>
         <div className="flex items-center justify-center mt-8">
-          <button className="text-white py-2 px-4 uppercase rounded bg-indigo-500 hover:bg-indigo-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+          <button className="text-white py-2 px-4 uppercase rounded bg-indigo-500 hover:bg-indigo-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5" type="submit" onClick={handleSubmit}>
             Iniciar Sesion
           </button>
         </div>
