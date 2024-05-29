@@ -9,7 +9,6 @@ const InventoryTable = ({
   handleDelete,
 }) => {
   if(loadingInventory) return <LoadingComponent />
-  console.log(currentItems)
   return (
     <div className="flex flex-col justify-center h-full space-y-4 py-5">
       {!loadingInventory &&
