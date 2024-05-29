@@ -22,7 +22,7 @@ const InventoryTable = ({
               >
                 <div className="w-full md:w-1/3 bg-white grid place-items-center">
                   <img
-                    src={`https://coldparts.online/${item.img_product}`}
+                    src={`https://coldparts.online${item.img_product}`}
                     alt="tailwind logo"
                     className="rounded-xl"
                   />
