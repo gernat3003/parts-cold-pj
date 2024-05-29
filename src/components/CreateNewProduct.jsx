@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAxios from "../Hooks/useAxios";
+import { toast } from "react-toastify";
 
 export default function CreateNewProduct() {
   const [product, setProduct] = useState({
@@ -11,10 +12,9 @@ export default function CreateNewProduct() {
     img_product: null,
     precio_producto: 0,
   });
-
+  const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
   const { fetchData, response, error, loading } = useAxios({});
-  console.log(error, loading)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,10 +26,13 @@ export default function CreateNewProduct() {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setProduct({
-      ...product,
-      img_product: file,
-    });
+    if (file && file.size <= 10 * 1024 * 1024) {
+      // 10MB size limit
+      setProduct({ ...product, img_product: file });
+      setImagePreview(URL.createObjectURL(file));
+    } else {
+      alert("El archivo debe ser una imagen y no debe exceder 10MB");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -39,8 +42,10 @@ export default function CreateNewProduct() {
     formData.append("codigo_producto", product.codigo_producto);
     formData.append("descripcion", product.descripcion);
     formData.append("cantidad_stock", product.cantidad_stock);
-    formData.append("img_product", product.img_product);
     formData.append("precio_producto", product.precio_producto);
+    if (product.img_product) {
+      formData.append("img_product", product.img_product);
+    }
 
     try {
       await fetchData({
@@ -51,14 +56,41 @@ export default function CreateNewProduct() {
           "Content-Type": "multipart/form-data",
         },
       });
-      if (response) {
-        navigate("/success");
-      }
+      toast.success("Producto creado con éxito", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      navigate("/maindashboard/inventario", {
+        state: { successMessage: "Producto creado con éxito" },
+      });
     } catch (err) {
-      console.error(err);
+      toast.error(err.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
-
+  if (error) {
+    toast.error(error, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
   return (
     <div>
       <section className="max-w-4xl p-6 mx-auto bg-indigo-600 rounded-md shadow-md dark:bg-gray-800 mt-5">
@@ -160,40 +192,60 @@ export default function CreateNewProduct() {
               Imagen del producto
             </label>
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-              <div className="space-y-1 text-center">
-                <svg
-                  className="mx-auto h-12 w-12 text-white"
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 48 48"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              {imagePreview ? (
+                <div className="space-y-1 text-center">
+                  <img
+                    src={imagePreview}
+                    alt="Imagen del producto"
+                    className="h-24 w-24 object-cover rounded-md"
                   />
-                </svg>
-                <div className="flex text-sm text-gray-600">
-                  <label
-                    htmlFor="img_product"
-                    className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                  <p className="text-xs text-white">
+                    Imagen cargada exitosamente
+                  </p>
+                  <button
+                    className="text-xs text-white"
+                    type="button"
+                    onClick={() => setImagePreview(null)}
                   >
-                    <span>Upload a file</span>
-                    <input
-                      id="img_product"
-                      name="img_product"
-                      type="file"
-                      onChange={handleFileChange}
-                      className="sr-only"
-                      accept="image/*"
-                    />
-                  </label>
-                  <p className="pl-1 text-white">or drag and drop</p>
+                    Eliminar imagen
+                  </button>
                 </div>
-                <p className="text-xs text-white">PNG, JPG, GIF up to 10MB</p>
-              </div>
+              ) : (
+                <div className="space-y-1 text-center">
+                  <svg
+                    className="mx-auto h-12 w-12 text-white"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 48 48"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <div className="flex text-sm text-gray-600">
+                    <label
+                      htmlFor="img_product"
+                      className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                    >
+                      <span>Upload a file</span>
+                      <input
+                        id="img_product"
+                        name="img_product"
+                        type="file"
+                        onChange={handleFileChange}
+                        className="sr-only"
+                        accept="image/*"
+                      />
+                    </label>
+                    <p className="pl-1 text-white">or drag and drop</p>
+                  </div>
+                  <p className="text-xs text-white">PNG, JPG, GIF up to 10MB</p>
+                </div>
+              )}
             </div>
           </div>
           <div className="flex justify-between mt-6">
