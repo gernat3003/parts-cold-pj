@@ -1,7 +1,6 @@
 import React from "react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import LoadingComponent from "./LoadingComponent";
-
 const InventoryTable = ({
   loadingInventory,
   errorInventory,
@@ -9,14 +8,13 @@ const InventoryTable = ({
   handleEdit,
   handleDelete,
 }) => {
+  if(loadingInventory) return <LoadingComponent />
   return (
     <div className="flex flex-col justify-center h-full space-y-4 py-5">
-      {loadingInventory && <LoadingComponent />}
       {!loadingInventory &&
         !errorInventory &&
         currentItems.map(
           (item) => (
-            console.log(item)
             (
               <div
                 className="relative flex flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-2xl mx-5 border border-white bg-white"
