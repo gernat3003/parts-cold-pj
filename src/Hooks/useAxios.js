@@ -7,7 +7,7 @@ const useAxios = (initialConfig) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const BASE_URL = "http://localhost:8000/api/"; // URL base por defecto
+  const BASE_URL = "https://coldparts.online/"; // URL base por defecto
 
   const fetchData = async (overrideConfig = {}) => {
     setLoading(true);

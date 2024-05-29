@@ -3,19 +3,18 @@ import axios from 'axios';
 
 // Creamos una función que devuelve una instancia de Axios configurada
 const createAxiosInstance = () => {
-  const apiUrl = "http://localhost:8000/api/"
+  const apiUrl = "https://coldparts.online/"
 
   return axios.create({
-    baseURL: apiUrl, // URL base para todas las solicitudes
-    timeout: 5000, // Tiempo de espera para las solicitudes (en milisegundos)
+    baseURL: apiUrl,
+    timeout: 5000,
     headers: {
-      'Content-Type': 'application/json', // Tipo de contenido para las solicitudes
+      'Content-Type': 'application/json',
     },
-    withCredentials: true, // Permitir cookies de autenticación en las solicitudes
+    withCredentials: true,
   });
 };
 
-// Hook personalizado para manejar solicitudes PUT
 const usePutRequest = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
