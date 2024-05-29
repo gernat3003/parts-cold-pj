@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../img/partsfrio.jpg";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
 export default function Header() {
   const handleLogout = async () => {
@@ -42,7 +42,7 @@ export default function Header() {
         </span>
       </button>
       <button className="float-right" id="logout" onClick={handleLogout}>
-        <ArrowLeftOnRectangleIcon className="h-7 w-7" />
+        <ArrowLeftStartOnRectangleIcon className="h-7 w-7" />
       </button>
     </div>
   );
