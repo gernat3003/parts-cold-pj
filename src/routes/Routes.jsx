@@ -18,6 +18,8 @@ import Invoices from "./../pages/Invoices";
 import MarketCar from "../pages/MarketCar";
 import CollectInfoConsumer from "../pages/CollectInfoConsumer";
 import CreateNewProduct from "../components/CreateNewProduct";
+import CreateNewUser from "../components/CreateNewUser";
+import NotFound from "../pages/NotFound";
 
 function ProtectedComponent({ children }) {
   const navigate = useNavigate();
@@ -49,12 +51,13 @@ function RoutesComp() {
           <Route path="/maindashboard" element={<MainDashboard />} />
           <Route path="/maindashboard/usuarios" element={<Users />} />
           <Route path="/maindashboard/inventario" element={<Inventory />} />
-          <Route path="/maindashboard/registro-ventas" element={<SalesRecord />}/>
+          <Route path="/maindashboard/registro-ventas" element={<NotFound />}/>
           <Route path="/maindashboard/facturacion" element={<Invoices />} />
           <Route path="/maindashboard/marketcar" element={<MarketCar />} />
           <Route path="/maindashboard/facturacion/generacionfactura" element={<CollectInfoConsumer />} />
           <Route path="/maindashboard/inventario/create-product" element={<CreateNewProduct />}/>
-          <Route path="*" element={<h1>Not Found 404</h1>} />
+          <Route path="/maindashboard/usuarios/createuser" element={<CreateNewUser />}/>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>
