@@ -253,7 +253,9 @@ export default function CreateNewProduct() {
               <button
                 type="button"
                 className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-indigo-500 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-gray-600"
-                onClick={() => navigate(-1)}
+                onClick={() =>       navigate("/maindashboard/inventario", {
+                  state: { successMessage: null },
+                })}
               >
                 Regresar
               </button>

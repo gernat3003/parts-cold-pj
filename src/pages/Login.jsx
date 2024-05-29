@@ -5,8 +5,7 @@ import axios from "axios";
 export default function Login() {
   axios.defaults.withCredentials = true;
   axios.defaults.withXSRFToken = true;
-  const baseURL = "https://coldparts.online/api/";
-  const cookieURL = "https://coldparts.online/";
+
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -15,12 +14,13 @@ export default function Login() {
 
     try {
       // Realizamos la solicitud para obtener el token CSRF
-      await axios.get(`${cookieURL}sanctum/csrf-cookie`, {
+      await axios.get(`http://localhost:8000/sanctum/csrf-cookie`, {
         withCredentials: true,
       });
+
       // Realizamos la solicitud de inicio de sesión
       const response = await axios.post(
-        `${baseURL}login`,
+        `http://localhost:8000/api/login`,
         {
           user_name: username,
           password: password,
@@ -42,6 +42,7 @@ export default function Login() {
       localStorage.setItem("user", username);
       localStorage.setItem("userIdLogged", data.user.id);
       localStorage.setItem("rol", data.user.rol);
+
       navigate("/maindashboard");
     } catch (error) {
       // Mostramos un mensaje de error al usuario
