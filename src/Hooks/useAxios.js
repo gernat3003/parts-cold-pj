@@ -10,7 +10,7 @@ const useAxios = (initialConfig) => {
   axios.defaults.withCredentials = true;
   axios.defaults.withXSRFToken = true;
 
-  const BASE_URL = "https://coldparts.online/api"; // URL base por defecto
+  const BASE_URL = "https://coldparts.online/api/"; // URL base por defecto
 
   const fetchData = async (overrideConfig = {}) => {
     setLoading(true);
