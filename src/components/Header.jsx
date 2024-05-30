@@ -12,7 +12,7 @@ export default function Header() {
       return;
     }
 
-    const response = await fetch("https://coldparts.online/api/logout", {
+    const response = await fetch("https://coldparts.online/apilogout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

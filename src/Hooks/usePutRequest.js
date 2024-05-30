@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Creamos una función que devuelve una instancia de Axios configurada
 const createAxiosInstance = () => {
-  const apiUrl = "https://coldparts.online/"
+  const apiUrl = "https://coldparts.online/api"
 
   return axios.create({
     baseURL: apiUrl,

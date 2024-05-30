@@ -52,13 +52,33 @@ const CollectInfoConsumer = () => {
     }
   }, [shouldSendRequest, formData]);
 
-  const { response, error, loading } = useAxios({
-    url: "generate-invoice",
-    method: "post",
-    body: clientData,
-    responseType: "blob",
-  });
+  const { fetchData, response, error, loading } = useAxios({});
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await fetchData({
+        url: "generate-invoice",
+        method: "post",
+        body: clientData,
+        responseType: "blob",
+        headers: {
+          "Content-Type": "aplication/json",
+        },
+      });
+      console.log(clientData, response);
+    } catch (err) {
+      toast.error(err.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
   const handleConfirmClient = async (e) => {
     e.preventDefault();
     setShouldSendRequest(true);
@@ -179,7 +199,7 @@ const CollectInfoConsumer = () => {
                     Telefono *
                   </label>
                   <input
-                    type="telefono "
+                    type="telefono"
                     id="telefono"
                     name="telefono"
                     className="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
@@ -198,7 +218,7 @@ const CollectInfoConsumer = () => {
                     DUI *
                   </label>
                   <input
-                    type="number"
+                    type="documento"
                     id="documento"
                     className="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
                     required
@@ -311,6 +331,7 @@ const CollectInfoConsumer = () => {
               </div>
               <div className="flex m-2">
                 <button
+                  onClick={handleSubmit}
                   type="submit"
                   className="w-1/2 mr-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                 >

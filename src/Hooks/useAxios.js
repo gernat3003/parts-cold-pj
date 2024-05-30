@@ -7,7 +7,10 @@ const useAxios = (initialConfig) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const BASE_URL = "https://coldparts.online/"; // URL base por defecto
+  axios.defaults.withCredentials = true;
+  axios.defaults.withXSRFToken = true;
+
+  const BASE_URL = "https://coldparts.online/api"; // URL base por defecto
 
   const fetchData = async (overrideConfig = {}) => {
     setLoading(true);
@@ -23,6 +26,7 @@ const useAxios = (initialConfig) => {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
         withCredentials: true,
+        data: overrideConfig.data || config.data, // Asegúrate de que estás pasando los datos aquí
         maxContentLength: 50 * 1024 * 1024, // 50MB
         maxBodyLength: 50 * 1024 * 1024, // 50MB
       });
