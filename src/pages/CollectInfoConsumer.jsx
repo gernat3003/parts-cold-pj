@@ -24,49 +24,36 @@ const CollectInfoConsumer = () => {
     documento: "",
     email: "",
   });
-  const [clientData, setClientData] = useState({
-    nombre_cliente: "",
-    direccion: "",
-    numero_telefono: "",
-    email: "",
-    giro: "",
-    documento: "",
-    registro_num: "",
-  });
-  const [shouldSendRequest, setShouldSendRequest] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
-
-  useEffect(() => {
-    if (shouldSendRequest) {
-      setClientData({
-        nombre_cliente: `${formData.nombre} ${formData.apellido}`,
-        direccion: `${formData.direccion}, ${formData.municipio}, ${formData.departamento}`,
-        numero_telefono: formData.telefono,
-        email: formData.email,
-        giro: formData.giro,
-        documento: formData.documento,
-        registro_num: formData.registro_num,
-        cart: cart,
-        total: totalAmount,
-      });
-    }
-  }, [shouldSendRequest, formData]);
 
   const { fetchData, response, error, loading } = useAxios({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const updatedClientData = {
+      nombre_cliente: `${formData.nombre} ${formData.apellido}`,
+      direccion: `${formData.direccion}, ${formData.municipio}, ${formData.departamento}`,
+      numero_telefono: formData.telefono,
+      email: formData.email,
+      giro: formData.giro,
+      documento: formData.documento,
+      registro_num: formData.registro_num,
+      cart: cart,
+      total: totalAmount,
+    };
+
     try {
       await fetchData({
         url: "generate-invoice",
         method: "post",
-        body: clientData,
+        data: updatedClientData,
         responseType: "blob",
         headers: {
           "Content-Type": "aplication/json",
         },
       });
-      console.log(clientData, response);
+      console.log(updatedClientData, response);
     } catch (err) {
       toast.error(err.message, {
         position: "top-center",
@@ -79,11 +66,6 @@ const CollectInfoConsumer = () => {
       });
     }
   };
-  const handleConfirmClient = async (e) => {
-    e.preventDefault();
-    setShouldSendRequest(true);
-  };
-
   useEffect(() => {
     if (response) {
       const url = window.URL.createObjectURL(
@@ -153,7 +135,7 @@ const CollectInfoConsumer = () => {
             <p className="text-gray-600 text-center mb-3">
               Ingresa los detalles del cliente.
             </p>
-            <form onSubmit={handleConfirmClient} className="w-full">
+            <form onSubmit={handleSubmit} className="w-full">
               <div className="flex mb-3">
                 <div className="w-1/2 mr-2">
                   <label
@@ -331,7 +313,6 @@ const CollectInfoConsumer = () => {
               </div>
               <div className="flex m-2">
                 <button
-                  onClick={handleSubmit}
                   type="submit"
                   className="w-1/2 mr-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                 >
