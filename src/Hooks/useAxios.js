@@ -10,7 +10,7 @@ const useAxios = (initialConfig) => {
   axios.defaults.withCredentials = true;
   axios.defaults.withXSRFToken = true;
 
-  const BASE_URL = "https://coldparts.online/api/";
+  const BASE_URL = "https://localhost:8000/api/";
 
   const fetchDataRef = useRef(null);
 
@@ -37,6 +37,7 @@ const useAxios = (initialConfig) => {
         setResponse(res.data);
       } catch (err) {
         setError(err.message || 'ocurrio un error');
+        console.log(err)
       } finally {
         setLoading(false);
       }
