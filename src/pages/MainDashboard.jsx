@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import rolesPermissions from "../utils/rolesPermissions";
 import { getOptionIcon, getOptionLabel } from "../utils/optionsHelpers";
+
 export default function MainDashboard() {
   const [userRole, setUserRole] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedRole = localStorage.getItem("rol");
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     setUserRole(storedRole);
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="p-5 h-90 mb-16 w-3/6 bg-slate-900 text-green-200 rounded-md opacity-60 w-3/8">
@@ -29,8 +38,7 @@ export default function MainDashboard() {
                 }
               }}
             >
-              {getOptionIcon(option)}{" "}
-              {getOptionLabel(option)}{" "}
+              {getOptionIcon(option)} {getOptionLabel(option)}{" "}
             </Link>
           ))
         ) : (
