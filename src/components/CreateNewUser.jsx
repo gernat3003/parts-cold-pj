@@ -65,7 +65,7 @@ export default function CreateNewUser() {
   return (
     <div className="bg-transparent flex items-center justify-center w-screen h-screen">
       <ToastContainer />
-      <div className="bg-white p-12 rounded-lg shadow-lg max-w-sm w-full">
+      <div className="bg-white p-5 rounded-lg shadow-lg max-w-sm w-full">
         <div className="flex justify-center mb-6">
           <span className="inline-block bg-gray-200 rounded-full p-3">
             <svg
@@ -82,7 +82,7 @@ export default function CreateNewUser() {
           </span>
         </div>
         <h2 className="text-2xl font-semibold text-center mb-4">
-          Crea un nuevo usuario
+          Crear un nuevo usuario
         </h2>
         <p className="text-gray-600 text-center mb-6">
           Ingresa los detalles del registro.
@@ -127,6 +127,7 @@ export default function CreateNewUser() {
               required
               placeholder="••••••••"
               name="password"
+              minLength="8"
               onChange={handleChange}
             />
           </div>
@@ -154,20 +155,21 @@ export default function CreateNewUser() {
               <option value="Operador de caja">Operador de caja</option>
             </select>
           </div>
-
-          <button
-            type="submit"
-            className="w-full mb-3 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-          >
-            Registrar
-          </button>
-          <button
-            onClick={handleCancel}
-            type="back"
-            className="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-          >
-            Cancelar
-          </button>
+          <div className="flex justify-between">
+            <button
+              type="submit"
+              className="w-full mb-3 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+            >
+              Registrar
+            </button>
+            <button
+              onClick={handleCancel}
+              type="button"
+              className="w-full mb-3 ml-5    bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+            >
+              Cancelar
+            </button>
+          </div>
         </form>
       </div>
     </div>
