@@ -1,18 +1,22 @@
 import React from "react";
 import logo from "../img/partsfrio.jpg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
 export default function Header() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleLogout = async () => {
     const token = localStorage.getItem("token");
 
     if (!token) {
+      console.error("No token found", token);
       navigate("/login");
       return;
     }
 
-    const response = await fetch("https://coldparts.online/api/logout", {
+    const response = await fetch("http://localhost:8000/api/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,15 +25,13 @@ export default function Header() {
     });
 
     if (response.ok) {
-      // Borra la información de la sesión del usuario
       localStorage.removeItem("token");
-      // Redirige al usuario a la página de inicio de sesión
       navigate("/login");
     } else {
       console.error("Logout failed");
     }
   };
-  const navigate = useNavigate();
+
   return (
     <div className="p-2 text-gray-900 bg-white rounded-lg shadow-lg font-medium capitalize">
       <button onClick={() => navigate("/maindashboard")}>
@@ -41,7 +43,7 @@ export default function Header() {
           />
         </span>
       </button>
-      <button className="float-right" id="logout" onClick={handleLogout}>
+      <button className="float-right" title="logout" onClick={handleLogout} disabled={location.pathname === "/login"}>
         <ArrowLeftStartOnRectangleIcon className="h-7 w-7" />
       </button>
     </div>
