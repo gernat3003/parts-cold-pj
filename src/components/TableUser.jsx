@@ -1,5 +1,6 @@
 import React from "react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import LoadingComponent from "./LoadingComponent";
 
 const TableUser = ({
   loadingUsers,
@@ -8,6 +9,9 @@ const TableUser = ({
   handleEdit,
   handleDelete,
 }) => {
+  if(loadingUsers && currentItems.length === 0){
+    return <LoadingComponent />
+  }
   return (
     <div className="px-3 py-4 flex justify-center">
       <table className="w-full text-md bg-white shadow-md rounded mb-4">
@@ -16,14 +20,9 @@ const TableUser = ({
             <th className="text-left p-3 px-5">Nombre</th>
             <th className="text-left p-3 px-5">Usuario</th>
             <th className="text-left p-3 px-5">Contraseña</th>
-            <th className="text-left p-3 px-5">Role</th>
+            <th className="text-left p-3 px-5">Rol</th>
             <th></th>
           </tr>
-          {loadingUsers && (
-            <tr>
-              <td>Loading...</td>
-            </tr>
-          )}
           {!loadingUsers &&
             !errorUsers &&
             currentItems.map((user) => (
