@@ -19,7 +19,9 @@ import MarketCar from "../pages/MarketCar";
 import CollectInfoConsumer from "../pages/CollectInfoConsumer";
 import CreateNewProduct from "../components/CreateNewProduct";
 import CreateNewUser from "../components/CreateNewUser";
+import EditUser from "../components/EditUser";
 import NotFound from "../pages/NotFound";
+import EditProduct from "../components/EditProduct";
 
 function ProtectedComponent({ children }) {
   const navigate = useNavigate();
@@ -48,15 +50,95 @@ function RoutesComp() {
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} exactpath />
-          <Route path="/maindashboard" element={<MainDashboard />} />
-          <Route path="/maindashboard/usuarios" element={<Users />} />
-          <Route path="/maindashboard/inventario" element={<Inventory />} />
-          <Route path="/maindashboard/registro-ventas" element={<NotFound />}/>
-          <Route path="/maindashboard/facturacion" element={<Invoices />} />
-          <Route path="/maindashboard/marketcar" element={<MarketCar />} />
-          <Route path="/maindashboard/facturacion/generacionfactura" element={<CollectInfoConsumer />} />
-          <Route path="/maindashboard/inventario/create-product" element={<CreateNewProduct />}/>
-          <Route path="/maindashboard/usuarios/createuser" element={<CreateNewUser />}/>
+          <Route
+            path="/maindashboard"
+            element={
+              <ProtectedComponent>
+                <MainDashboard />
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path="/maindashboard/usuarios"
+            element={
+              <ProtectedComponent>
+                <Users />{" "}
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path="/maindashboard/inventario"
+            element={
+              <ProtectedComponent>
+                <Inventory />{" "}
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path="/maindashboard/registro-ventas"
+            element={
+              <ProtectedComponent>
+                <NotFound />{" "}
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path="/maindashboard/facturacion"
+            element={
+              <ProtectedComponent>
+                {" "}
+                <Invoices />{" "}
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path="/maindashboard/marketcar"
+            element={
+              <ProtectedComponent>
+                <MarketCar />{" "}
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path="/maindashboard/facturacion/generacionfactura"
+            element={
+              <ProtectedComponent>
+                <CollectInfoConsumer />{" "}
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path="/maindashboard/inventario/create-product"
+            element={
+              <ProtectedComponent>
+                <CreateNewProduct />{" "}
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path="/maindashboard/usuarios/createuser"
+            element={
+              <ProtectedComponent>
+                <CreateNewUser />{" "}
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path="/maindashboard/usuarios/editarusuario"
+            element={
+              <ProtectedComponent>
+                <EditUser />{" "}
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path="/maindashboard/inventario/editar-producto"
+            element={
+              <ProtectedComponent>
+                <EditProduct />
+              </ProtectedComponent>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
