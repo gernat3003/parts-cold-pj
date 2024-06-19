@@ -4,6 +4,7 @@ import useAxios from "../Hooks/useAxios";
 import { toast, ToastContainer } from "react-toastify";
 import PdfPreview from "./PdfPreview";
 import "react-toastify/dist/ReactToastify.css";
+import useAuth from "../Hooks/useAuth";
 
 const CollectInfoConsumer = () => {
   const navigate = useNavigate();
@@ -11,7 +12,6 @@ const CollectInfoConsumer = () => {
   const { state } = location;
   const { cart } = state || {};
   const { totalAmount } = state || {};
-
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
@@ -25,12 +25,11 @@ const CollectInfoConsumer = () => {
     email: "",
   });
   const [pdfUrl, setPdfUrl] = useState(null);
-
   const { fetchData, response, error, loading } = useAxios({});
+  useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const updatedClientData = {
       nombre_cliente: `${formData.nombre} ${formData.apellido}`,
       direccion: `${formData.direccion}, ${formData.municipio}, ${formData.departamento}`,
@@ -53,7 +52,6 @@ const CollectInfoConsumer = () => {
           "Content-Type": "aplication/json",
         },
       });
-      console.log(updatedClientData, response);
     } catch (err) {
       toast.error(err.message, {
         position: "top-center",

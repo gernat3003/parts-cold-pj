@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import useAuth from "../Hooks/useAuth";
 
 export default function MarketCar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { cart: initialCart } = location.state || { cart: [] };
   const [cart, setCart] = useState(initialCart);
+
+useAuth();
 
   const handleRemoveProduct = (productId) => {
     setCart(cart.filter((item) => item.id !== productId));

@@ -5,6 +5,7 @@ import useGetRequest from "../Hooks/useGetRequest";
 import useDeleteRequest from "../Hooks/useDeleteRequest";
 import Pagination from "../components/Pagination";
 import TableUser from "../components/TableUser";
+import useAuth from "../Hooks/useAuth";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -14,9 +15,7 @@ function Users() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(7);
   const location = useLocation();
-
   const { successMessage } = location.state || {};
-
   const {
     data,
     loading: loadingUsers,
@@ -27,6 +26,8 @@ function Users() {
     loading: loadingDelete,
     error: errorDelete,
   } = useDeleteRequest();
+
+  useAuth();
 
   useEffect(() => {
     if (successMessage) {

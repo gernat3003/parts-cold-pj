@@ -5,6 +5,7 @@ import useGetRequest from "../Hooks/useGetRequest";
 import Pagination from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
 import MarketTable from "../components/MarketTable";
+import useAuth from "../Hooks/useAuth";
 
 export default function Invoices() {
   const [products, setProducts] = useState([]);
@@ -15,9 +16,7 @@ export default function Invoices() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const location = useLocation();
-
   const { successMessage } = location.state || {};
-
   const {
     data,
     loading: loadingProducts,
@@ -25,6 +24,7 @@ export default function Invoices() {
   } = useGetRequest(
     isSearching ? `inventario/search?termino=${searchTerm}` : `inventario`
   );
+useAuth();
 
   useEffect(() => {
     if (successMessage) {

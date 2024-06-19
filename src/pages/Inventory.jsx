@@ -6,6 +6,7 @@ import useDeleteRequest from "../Hooks/useDeleteRequest";
 import Pagination from "../components/Pagination";
 import InventoryTable from "./../components/InventoryTable";
 import SearchBar from "../components/SearchBar";
+import useAuth from "../Hooks/useAuth";
 
 export default function Inventory() {
   const [products, setProducts] = useState([]);
@@ -15,9 +16,8 @@ export default function Inventory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const location = useLocation();
-
   const { successMessage } = location.state || {};
-
+  useAuth();
   const {
     data,
     loading: loadingProducts,
@@ -25,12 +25,12 @@ export default function Inventory() {
   } = useGetRequest(
     isSearching ? `inventario/search?termino=${searchTerm}` : `inventario`
   );
-
   const {
     deleteData,
     loading: loadingDelete,
     error: errorDelete,
   } = useDeleteRequest();
+
 
   useEffect(() => {
     if (successMessage) {
@@ -53,7 +53,9 @@ export default function Inventory() {
   }, [data]);
 
   const handleEdit = (itemId) => {
-    navigate(`/maindashboard/usuarios/editarproducto`, { state: { itemId } });
+    navigate(`/maindashboard/inventario/editar-producto`, {
+      state: { itemId },
+    });
   };
 
   const handleDelete = async (itemId) => {
@@ -125,9 +127,7 @@ export default function Inventory() {
         <div className="flex justify-between space-y-2">
           <h1 className="text-3xl text-white">Inventario</h1>
           <button
-            onClick={() =>
-              navigate("/maindashboard/inventario/create-product")
-            }
+            onClick={() => navigate("/maindashboard/inventario/create-product")}
             className="text-sm bg-green-500 hover:bg-green-700 text-white py-2 px-2 rounded focus:outline-none focus:shadow-outline"
           >
             Agregar Nuevo Item

@@ -1,7 +1,6 @@
-import React from 'react'
-
+import React from "react";
+import useAuth from "../Hooks/useAuth";
 export default function SalesRecord() {
-  return (
-    <div>SalesRecord</div>
-  )
+useAuth();
+  return <div>SalesRecord</div>;
 }

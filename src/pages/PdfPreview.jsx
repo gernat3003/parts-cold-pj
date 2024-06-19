@@ -1,6 +1,11 @@
-import React from 'react';
-
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../Hooks/useAuth";
 const PdfPreview = ({ pdfUrl }) => {
+  const navigate = useNavigate();
+
+  useAuth();
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <iframe
@@ -9,7 +14,7 @@ const PdfPreview = ({ pdfUrl }) => {
         height="100%"
         className="border-none flex-grow"
         title="PDF Preview"
-        style={{ minHeight: '600px' }} // Asegura un mínimo de altura
+        style={{ minHeight: "600px" }} // Asegura un mínimo de altura
       ></iframe>
       <div className="flex justify-center mt-4">
         <a
