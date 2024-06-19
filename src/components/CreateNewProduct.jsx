@@ -14,7 +14,7 @@ export default function CreateNewProduct() {
   });
   const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
-  const { fetchData, response, error, loading } = useAxios({});
+  const { fetchData, error } = useAxios({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -140,6 +140,7 @@ export default function CreateNewProduct() {
                 onChange={handleChange}
                 className="block appearance-none w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                 min={0}
+                step={0.01}
                 required
               />
             </div>
@@ -245,9 +246,11 @@ export default function CreateNewProduct() {
               <button
                 type="button"
                 className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-indigo-500 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-gray-600"
-                onClick={() =>       navigate("/maindashboard/inventario", {
-                  state: { successMessage: null },
-                })}
+                onClick={() =>
+                  navigate("/maindashboard/inventario", {
+                    state: { successMessage: null },
+                  })
+                }
               >
                 Regresar
               </button>
