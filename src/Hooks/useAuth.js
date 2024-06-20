@@ -9,7 +9,7 @@ const useAuth = () => {
   useEffect(() => {
     if (token) {
       // Verificar la validez del token con el servidor
-      axios.get('http://localhost:8000/api/verify', {
+      axios.get('https://coldparts.online/api/verify', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
