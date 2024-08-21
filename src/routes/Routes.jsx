@@ -62,7 +62,7 @@ function RoutesComp() {
             path="/maindashboard/usuarios"
             element={
               <ProtectedComponent>
-                <Users />{" "}
+                <Users />
               </ProtectedComponent>
             }
           />
@@ -70,7 +70,7 @@ function RoutesComp() {
             path="/maindashboard/inventario"
             element={
               <ProtectedComponent>
-                <Inventory />{" "}
+                <Inventory />
               </ProtectedComponent>
             }
           />
@@ -78,7 +78,7 @@ function RoutesComp() {
             path="/maindashboard/registro-ventas"
             element={
               <ProtectedComponent>
-                <NotFound />{" "}
+                <SalesRecord />
               </ProtectedComponent>
             }
           />
@@ -86,8 +86,7 @@ function RoutesComp() {
             path="/maindashboard/facturacion"
             element={
               <ProtectedComponent>
-                {" "}
-                <Invoices />{" "}
+                <Invoices />
               </ProtectedComponent>
             }
           />
@@ -95,7 +94,7 @@ function RoutesComp() {
             path="/maindashboard/marketcar"
             element={
               <ProtectedComponent>
-                <MarketCar />{" "}
+                <MarketCar />
               </ProtectedComponent>
             }
           />
@@ -103,7 +102,7 @@ function RoutesComp() {
             path="/maindashboard/facturacion/generacionfactura"
             element={
               <ProtectedComponent>
-                <CollectInfoConsumer />{" "}
+                <CollectInfoConsumer />
               </ProtectedComponent>
             }
           />
@@ -111,7 +110,7 @@ function RoutesComp() {
             path="/maindashboard/inventario/create-product"
             element={
               <ProtectedComponent>
-                <CreateNewProduct />{" "}
+                <CreateNewProduct />
               </ProtectedComponent>
             }
           />
@@ -119,7 +118,7 @@ function RoutesComp() {
             path="/maindashboard/usuarios/createuser"
             element={
               <ProtectedComponent>
-                <CreateNewUser />{" "}
+                <CreateNewUser />
               </ProtectedComponent>
             }
           />
@@ -127,7 +126,7 @@ function RoutesComp() {
             path="/maindashboard/usuarios/editarusuario"
             element={
               <ProtectedComponent>
-                <EditUser />{" "}
+                <EditUser />
               </ProtectedComponent>
             }
           />
