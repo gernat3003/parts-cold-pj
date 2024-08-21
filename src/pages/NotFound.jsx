@@ -1,8 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function NotFound() {
-  const navigate = useNavigate();
 
   return (
     <main class="h-screen w-full flex flex-col justify-center items-center bg-slate-700">
