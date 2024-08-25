@@ -16,7 +16,7 @@ export default function Header() {
       return;
     }
 
-    const response = await fetch("https://coldparts.online/api/logout", {
+    const response = await fetch("http://localhost:8000/api/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

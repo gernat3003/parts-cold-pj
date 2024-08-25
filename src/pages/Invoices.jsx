@@ -24,8 +24,7 @@ export default function Invoices() {
   } = useGetRequest(
     isSearching ? `inventario/search?termino=${searchTerm}` : `inventario`
   );
-useAuth();
-
+  useAuth();
   useEffect(() => {
     if (successMessage) {
       toast.success(successMessage, {

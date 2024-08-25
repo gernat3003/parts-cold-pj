@@ -5,6 +5,7 @@ import InvoiceTemplate from "../components/InvoiceTemplate";
 import InvoiceViewer from "../components/InvoiceViewer";
 import "react-toastify/dist/ReactToastify.css";
 import useAuth from "../Hooks/useAuth";
+import UpdateData from "../components/UpdateData";
 
 const CollectInfoConsumer = () => {
   const navigate = useNavigate();
@@ -12,6 +13,8 @@ const CollectInfoConsumer = () => {
   const { state } = location;
   const { cart } = state || {};
   const { totalAmount } = state || {};
+  const [isConfirmed, setIsConfirmed] = useState(false);
+
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
@@ -60,6 +63,10 @@ const CollectInfoConsumer = () => {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleConfirm = () => {
+    setIsConfirmed(true);
   };
 
   const handleCancel = () => {
@@ -287,17 +294,29 @@ const CollectInfoConsumer = () => {
         </div>
       ) : (
         invoiceBlob && (
-          <div class="w-[50%]">
-              <InvoiceViewer blob={invoiceBlob} />
-              <div className="flex justify-center mt-2">
-                <a
-                  href={URL.createObjectURL(invoiceBlob)}
-                  download={`${formData.nombre}_${formData.apellido}.pdf`}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          <div className="w-[50%]">
+            <InvoiceViewer blob={invoiceBlob} />
+            <div className="flex justify-center mt-2">
+              {!isConfirmed ? (
+                <button
+                  onClick={handleConfirm}
+                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700"
                 >
-                  Descargar PDF
-                </a>
-              </div>
+                  Confirmar Datos
+                </button>
+              ) : (
+                <>
+                  <UpdateData cart={cart} />
+                  <a
+                    href={URL.createObjectURL(invoiceBlob)}
+                    download={`${formData.nombre}_${formData.apellido}.pdf`}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  >
+                    Descargar PDF
+                  </a>
+                </>
+              )}
+            </div>
           </div>
         )
       )}

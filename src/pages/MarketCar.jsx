@@ -8,8 +8,7 @@ export default function MarketCar() {
   const navigate = useNavigate();
   const { cart: initialCart } = location.state || { cart: [] };
   const [cart, setCart] = useState(initialCart);
-
-useAuth();
+  useAuth();
 
   const handleRemoveProduct = (productId) => {
     setCart(cart.filter((item) => item.id !== productId));
