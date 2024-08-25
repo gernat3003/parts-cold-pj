@@ -9,6 +9,7 @@ const InventoryTable = ({
   handleDelete,
 }) => {
   if(loadingInventory) return <LoadingComponent />
+  console.log(currentItems)
   return (
     <div className="flex flex-col justify-center h-full space-y-4 py-5">
       {!loadingInventory &&
@@ -22,7 +23,7 @@ const InventoryTable = ({
               >
                 <div className="w-full md:w-1/3 bg-white grid place-items-center">
                   <img
-                    src={`http://localhost:8000${item.img_product}`}
+                    src={`https://coldparts.online${item.img_product}`}
                     alt="tailwind logo"
                     className="rounded-xl"
                   />
@@ -58,7 +59,7 @@ const InventoryTable = ({
                     </div>
                     <div>
                       <button
-                        onClick={() => handleEdit(item.codigo_producto)}
+                        onClick={() => handleEdit(item.id)}
                         className="text-sm text-blue rounded focus:outline-none focus:shadow-outliine mr-5"
                         title="Editar el item seleccionado"
                       >

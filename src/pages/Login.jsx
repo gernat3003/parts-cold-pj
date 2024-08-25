@@ -17,13 +17,13 @@ export default function Login() {
 
     try {
       // Realizamos la solicitud para obtener el token CSRF
-      await axios.get(`http://localhost:8000/sanctum/csrf-cookie`, {
+      await axios.get(`https://coldparts.online/sanctum/csrf-cookie`, {
         withCredentials: true,
       });
 
       // Realizamos la solicitud de inicio de sesión
       const response = await axios.post(
-        `http://localhost:8000/api/login`,
+        `https://coldparts.online/api/login`,
         {
           user_name: username,
           password: password,
@@ -121,7 +121,7 @@ export default function Login() {
             </svg>
           </div>
           <div className="absolute right-0 inset-y-0 flex items-center">
-            <button type="button" onClick={togglePasswordVisibility} title="Mostrar/ocultar">
+            <button type="button" onClick={togglePasswordVisibility}>
               {isPasswordVisible ? (
                 <EyeSlashIcon className="h-7 w-7 mr-3 text-gray-400 p-1" />
               ) : (
@@ -131,7 +131,7 @@ export default function Login() {
           </div>
         </div>
         <div className="flex items-center justify-center mt-8">
-          <button className="text-white py-2 px-4 uppercase rounded bg-indigo-500 hover:bg-indigo-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5" type="submit" onClick={handleSubmit} title="Iniciar Sesion">
+          <button className="text-white py-2 px-4 uppercase rounded bg-indigo-500 hover:bg-indigo-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5" type="submit" onClick={handleSubmit}>
             Iniciar Sesion
           </button>
         </div>
