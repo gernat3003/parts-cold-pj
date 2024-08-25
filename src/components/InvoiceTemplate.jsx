@@ -111,8 +111,8 @@ const MyDocument = ({ data }) => {
           <View style={styles.header}>
             <View style={styles.logoContainer}>
               <Image
-              source="https://scontent.fsal2-1.fna.fbcdn.net/v/t1.6435-9/107370199_102730704849659_1247036662282718029_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=-l17IGeQldMQ7kNvgG6ssWF&_nc_ht=scontent.fsal2-1.fna&oh=00_AYD1k__bDefC8EKdm7jROl3GAW7Cq2ren899psGB1vgN5g&oe=66ED1045"
-              alt="Business Logo"
+                source="https://scontent.fsal2-1.fna.fbcdn.net/v/t1.6435-9/107370199_102730704849659_1247036662282718029_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=-l17IGeQldMQ7kNvgG6ssWF&_nc_ht=scontent.fsal2-1.fna&oh=00_AYD1k__bDefC8EKdm7jROl3GAW7Cq2ren899psGB1vgN5g&oe=66ED1045"
+                alt="Business Logo"
                 style={styles.logo}
               />
               <View>
