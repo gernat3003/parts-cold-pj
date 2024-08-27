@@ -4,9 +4,9 @@ import { ToastContainer } from "react-toastify";
 import InvoiceTemplate from "../components/InvoiceTemplate";
 import InvoiceViewer from "../components/InvoiceViewer";
 import UpdateData from "../components/UpdateData";
-import "react-toastify/dist/ReactToastify.css";
 import useAuth from "../Hooks/useAuth";
 import InfoClientComp from "../components/InfoClientComp";
+import "react-toastify/dist/ReactToastify.css";
 
 const CollectInfoConsumer = () => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ const CollectInfoConsumer = () => {
   useAuth();
   const handleBlobGenerated = (blob) => {
     setInvoiceBlob(blob);
-    setShowForm(false); // Ocultar el formulario cuando se genera el blob
+    setShowForm(false);
   };
 
   const handleSubmit = async (e) => {
@@ -51,11 +51,8 @@ const CollectInfoConsumer = () => {
       cart: cart,
       total: totalAmount,
     };
-
-    // Establecer los datos de la factura para que el componente InvoiceTemplate se renderice
     setInvoiceData(updatedClientData);
   };
-  /** ----------------------------------------------------------------------------------------- */
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,7 +66,7 @@ const CollectInfoConsumer = () => {
   };
 
   const handleCancel = () => {
-    navigate("/admin-dashboard/clientes");
+    navigate("/maindashboard/facturacion");
   };
 
   return (
@@ -87,22 +84,43 @@ const CollectInfoConsumer = () => {
             <InvoiceViewer blob={invoiceBlob} />
             <div className="flex justify-center mt-2">
               {!isConfirmed ? (
-                <button
-                  onClick={handleConfirm}
-                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-                >
-                  Confirmar Datos
-                </button>
+                <div className="flex justify-center">
+                  <button
+                    onClick={handleConfirm}
+                    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 mr-5"
+                  >
+                    Confirmar Datos
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowForm(true);
+                    }}
+                  >
+                    Cancelar
+                  </button>
+                </div>
               ) : (
                 <>
-                  <UpdateData cart={cart} />
+                  <UpdateData
+                    cart={cart}
+                    createRecord={invoiceData}
+                    invoiceBlob={invoiceBlob}
+                  />
                   <a
                     href={URL.createObjectURL(invoiceBlob)}
                     download={`${formData.nombre}_${formData.apellido}.pdf`}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 mr-5"
                   >
                     Descargar PDF
                   </a>
+                  <button
+                    onClick={handleCancel}
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                  >
+                    Nueva compra!
+                  </button>
                 </>
               )}
             </div>
