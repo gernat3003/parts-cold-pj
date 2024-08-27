@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 
-const useAxios = (initialConfig) => {
+const useAxios = (initialConfig = {}) => {
   const [config, setConfig] = useState(initialConfig);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState('');
@@ -33,9 +33,11 @@ const useAxios = (initialConfig) => {
         maxBodyLength: 50 * 1024 * 1024,
       });
       setResponse(res.data);
+      return res; // Asegúrate de devolver la respuesta completa
     } catch (err) {
-      setError(err.message || 'ocurrio un error');
+      setError(err.message || 'ocurrió un error');
       console.error(err);
+      throw err; // Lanza el error para que pueda ser manejado en el componente
     } finally {
       setLoading(false);
     }
